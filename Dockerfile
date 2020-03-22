@@ -36,5 +36,7 @@ COPY entrypoint.sh /entrypoint.sh
 COPY .bashrc /etc/skel/.bashrc
 COPY sudoers /etc/sudoers
 
+ENV DISPLAY=:0
+
 CMD /bin/bash
 ENTRYPOINT ["/entrypoint.sh"]
