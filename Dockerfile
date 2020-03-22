@@ -33,8 +33,7 @@ RUN pacman -S --noconfirm neovim \
 
 
 COPY entrypoint.sh /entrypoint.sh
-
-COPY entrypoint.sh /entrypoint.sh
+COPY .bashrc /etc/skel/.bashrc
 COPY sudoers /etc/sudoers
 
 CMD /bin/bash
