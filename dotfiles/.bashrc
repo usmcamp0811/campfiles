@@ -17,6 +17,10 @@ case ${TERM} in
 		;;
         esac
 
+# source all the other bash config files
+for file in ~/.config/bash/{exports,aliases}; do
+    [ -r "$file" ] && source "$file"
+done
 
 complete -cf sudo
 shopt -s checkwinsize

@@ -18,3 +18,12 @@ exit
 la
 ls
 exit
+compton
+picom
+exit
+tmux
+alacritty 
+exit
+lt
+lsd
+exit
