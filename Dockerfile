@@ -35,8 +35,11 @@ RUN pacman -S --noconfirm neovim \
 COPY entrypoint.sh /entrypoint.sh
 COPY .bashrc /etc/skel/.bashrc
 COPY sudoers /etc/sudoers
+COPY ./dotfiles /home/aur
 
 ENV DISPLAY=:0
+ENV SID=aur
+ENV UID=1000
 
 CMD /bin/bash
 ENTRYPOINT ["/entrypoint.sh"]

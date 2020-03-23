@@ -12,5 +12,5 @@
   "vcs": {
     "show_symbol": true
   },
-  "theme": "/home/mcamp/.config/powerline-shell/themes/matt_theme.py"
+  "theme": "~/.config/powerline-shell/themes/matt_theme.py"
 }
