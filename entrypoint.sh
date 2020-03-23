@@ -10,7 +10,14 @@
 &&  chown -R $SID /home/$SID 
 
 
-[ "$UID" != "1000" ] \
+[ "$(id $SID -u)" != "$UID" ] \
+&& echo "Changing UID of $SID" \
 && usermod -u $UID $SID
+
+[ "$(id $SID -g)" != "$GID" ] \
+&& echo "Changing Default GID of $SID" \
+&& OG=$(id $SID -g -n) \
+&& groupmod -g $GID $OG
+
 
 su $SID

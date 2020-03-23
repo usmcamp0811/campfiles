@@ -40,6 +40,7 @@ COPY ./dotfiles /home/aur
 ENV DISPLAY=:0
 ENV SID=aur
 ENV UID=1000
+ENV GID=1000
 
 CMD /bin/bash
 ENTRYPOINT ["/entrypoint.sh"]
