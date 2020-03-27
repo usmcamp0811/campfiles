@@ -275,3 +275,14 @@ la
 exit
 exit
 exit
+du -sh /var/cache/pacman/pkg/
+sudo paccache -r
+sudo ls /var/cache/pacman/pkg/ | wc -l
+paccache -r
+sudu su
+sudo su
+exit
+(echo -e "y\ny\n" | pacman -Scc)
+sudo (echo -e "y\ny\n" | pacman -Scc)
+sudo su
+exit
