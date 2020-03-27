@@ -12,12 +12,18 @@
 
 [ "$(id $SID -u)" != "$UID" ] \
 && echo "Changing UID of $SID" \
-&& usermod -u $UID $SID
+&& usermod -u $UID $SID \
+&& chown -R $SID /home/$SID 
 
 [ "$(id $SID -g)" != "$GID" ] \
 && echo "Changing Default GID of $SID" \
 && OG=$(id $SID -g -n) \
-&& groupmod -g $GID $OG
+&& groupmod -g $GID $OG \
+&& chown -R $SID /home/$SID 
 
 
 su $SID
+cd /home/$SID
+
+# xterm fucks up ranger's theme
+export TERM=alacritty

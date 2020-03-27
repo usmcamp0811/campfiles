@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export BROWSER='/usr/bin/brave'
 export EDITOR='/usr/bin/nvim'
 # makes man pages stay in the terminal when you exitthem
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"

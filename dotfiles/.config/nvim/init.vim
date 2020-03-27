@@ -29,9 +29,9 @@ let mapleader=","
 " }}}
 
 " Set Vim Directories {{{
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-set undodir=~/.vim/undo
+set backupdir=~/.config/nvim/backups
+set directory=~/.config/nvim/swaps
+set undodir=~/.config/nvim/undo
 " }}}
 
 source ~/.config/nvim/general.vim
