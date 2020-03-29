@@ -1,0 +1,9 @@
+[Unit]
+Description=A simple service to handle the closing of my XPS 9570 lid
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/bin/lid_action
+
+[Install]
+WantedBy=multi-user.target

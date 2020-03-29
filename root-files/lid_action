@@ -1,0 +1,81 @@
+#!/bin/sh
+
+LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+CURRENT_LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+NUM_DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+# make sure this is a laptop
+if [ -f "/proc/acpi/button/lid/LID0/state" ]
+then
+    while true
+    do
+        echo "BEGIN!!"
+        if [[ "$CURRENT_LID" != "$LID" ]]
+        then
+            if [[ "$CURRENT_LID" == "closed" ]]
+            then
+                # turn everything on 
+                /bin/bash ~/.scripts/auto-screen 
+                # disable the laptop screen
+                xrandr --output eDP-1 --off
+                feh --bg-scale ~/.background
+                /bin/bash ~/.config/polybar/launch 
+                # if lid is closed we probably want to use hdmi audio...
+                # TODO: have some way to handle edge cases where we might not want hdmi audio
+                pactl set-card-profile 1 output:hdmi-stereo
+                DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+                LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+                echo $LID
+            else
+                xrandr --output eDP-1 --auto --primary
+                feh --bg-scale ~/.background
+                /bin/bash ~/.config/polybar/launch 
+                # lid is open so probably want to use onboard audio
+                pactl set-card-profile 1 output:analog-stereo
+                DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+                LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+                echo $LID
+            fi
+            sleep 2s
+        elif [[ "$NUM_DISPLAYS" != "$DISPLAYS" ]]
+        then 
+           if [[ "$NUM_DISPLAYS" == "1" ]]
+                xrandr --output eDP-1 --auto --primary
+                feh --bg-scale ~/.background
+                /bin/bash ~/.config/polybar/launch 
+                # if lid is closed we probably want to use hdmi audio...
+                # TODO: have some way to handle edge cases where we might not want hdmi audio
+                pactl set-card-profile 1 output:analog-stereo
+                DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+                LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+                echo "There are $DISPLAYS displays and the lid is $CURRENT_LID!" 
+            then
+                # turn everything on 
+                /bin/bash ~/.scripts/auto-screen 
+                # disable the laptop screen
+                xrandr --output eDP-1 --off
+                feh --bg-scale ~/.background
+                /bin/bash ~/.config/polybar/launch 
+                # if lid is closed we probably want to use hdmi audio...
+                # TODO: have some way to handle edge cases where we might not want hdmi audio
+                pactl set-card-profile 1 output:hdmi-stereo
+                DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+                LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+                echo "There are $DISPLAYS displays and the lid is $CURRENT_LID" 
+                # do nothing if power is offline.. that can be handled by lid movement
+           fi
+           sleep 2s
+        else
+            echo "$CURRENT_LID  ==  $LID"
+            echo "$NUM_DISPLAYS  ==  $DISPLAYS"
+            echo "END!"
+            sleep 2s
+        fi
+        CURRENT_LID=$(cat /proc/acpi/button/lid/LID0/state | awk '{print $2}')
+        NUM_DISPLAYS=$(xrandr | grep -w "connected" | awk '{print $1}' | wc -l)
+    done
+fi
+# must not be the laptop so lets just exit
+exit 0
+
+
