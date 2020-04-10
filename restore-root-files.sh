@@ -30,9 +30,6 @@ then
     # disable fingerprint reader
     /bin/bash ~/.config/root-files/fingerprint_reader.sh 
 
-    # laptop lid service
-    cp ./root-files/laptop-lid-action-monitors.service /lib/systemd/system/laptop-lid-action-monitors.service 
-    chmod 644 /lib/systemd/system/laptop-lid-action-monitors.service 
 
 else 
     echo "Skipping XPS 950 specific files..."

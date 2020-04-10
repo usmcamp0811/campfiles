@@ -31,3 +31,4 @@ cd /home/$SID
 export TERM=alacritty
 
 exec "$@"
+exit

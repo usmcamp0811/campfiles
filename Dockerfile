@@ -24,12 +24,11 @@ USER root
 COPY ./pacman-install-docker.sh /pacman-install-docker.sh 
 RUN /pacman-install-docker.sh
 
-
-COPY entrypoint.sh /entrypoint.sh
-COPY .bashrc /etc/skel/.bashrc
-COPY sudoers /etc/sudoers
 COPY ./dotfiles /home/aur
 
+COPY .bashrc /etc/skel/.bashrc
+COPY sudoers /etc/sudoers
+COPY entrypoint.sh /entrypoint.sh
 
 ENV DISPLAY=:0
 ENV SID=aur
