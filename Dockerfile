@@ -28,6 +28,7 @@ COPY ./dotfiles /home/aur
 
 COPY .bashrc /etc/skel/.bashrc
 COPY sudoers /etc/sudoers
+COPY id-clone /build/id-clone
 COPY entrypoint.sh /entrypoint.sh
 
 ENV DISPLAY=:0

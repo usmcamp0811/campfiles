@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# if ID is set then use it to clone the user SID
+[ -z "$ID" ] || /bin/bash /build/id-clone $ID  
+rm -rf /home/aur
+# tar -C /home/ -xvf /build/zues.tar 
+chown -R $SID /home/aur
+
+
 [ "$SID" != "aur" ] \
 && [ $(cat /etc/passwd | grep aur | wc -l) == 1 ] \
 && echo "$SID is not a user...creating $SID" \
@@ -21,6 +28,8 @@
 && OG=$(id $SID -g -n) \
 && groupmod -g $GID $OG \
 && chown -R $SID /home/aur
+
+echo 'root:aur' | chpasswd 
 
 # change user 
 su $SID
