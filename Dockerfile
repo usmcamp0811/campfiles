@@ -22,9 +22,10 @@ RUN pacman -Syu --noconfirm \
 USER root
 
 COPY ./pacman-install-docker.sh /pacman-install-docker.sh 
-RUN /pacman-install-docker.sh
+RUN /pacman-install-docker.sh 
 
 COPY ./dotfiles /home/aur
+
 
 COPY .bashrc /etc/skel/.bashrc
 COPY sudoers /etc/sudoers
@@ -35,7 +36,6 @@ ENV DISPLAY=:0
 ENV SID=aur
 ENV UID=1000
 ENV GID=1000
-
 
 CMD /bin/bash
 ENTRYPOINT ["/entrypoint.sh"]

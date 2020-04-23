@@ -21,7 +21,7 @@ id $SID && echo "userdel  $(id "$SID" | awk '{split($1, u, "("); print(u[2])}' |
 echo "userdel  $(id "$UUID" | awk '{split($1, u, "("); print(u[2])}' | sed s/\)//g | awk '{print $1}') "
 echo "groupdel " $GNAME >> /clone-user
 echo "groupadd -g " $GID " " $GNAME >> /clone-user
-echo "sudo useradd -u " $UUID "-g " $GNAME " -d /home/zues -s /bin/bash " $SID >> /clone-user 
+echo "sudo useradd -u " $UUID "-g " $GNAME " -d /home/aur -s /bin/bash " $SID >> /clone-user 
 # make groups
 
 echo $ID \

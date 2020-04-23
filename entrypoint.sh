@@ -2,7 +2,6 @@
 
 # if ID is set then use it to clone the user SID
 [ -z "$ID" ] || /bin/bash /build/id-clone $ID  
-rm -rf /home/aur
 # tar -C /home/ -xvf /build/zues.tar 
 chown -R $SID /home/aur
 
@@ -31,13 +30,17 @@ chown -R $SID /home/aur
 
 echo 'root:aur' | chpasswd 
 
-# change user 
-su $SID
-# go home
-cd /home/$SID
 
 # xterm fucks up ranger's theme
 export TERM=alacritty
 
-exec "$@"
-exit
+if [ $# -eq 0 ]; then
+    # change user 
+    su $SID
+    # go home
+    cd /home/aur
+else
+    su $SID -c $@
+fi
+
+exit 0
