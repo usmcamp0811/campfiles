@@ -43,4 +43,4 @@ else
     su $SID -c $@
 fi
 
-exit 0
+exac $@

@@ -31,7 +31,7 @@ echo $ID \
 | sed s/,/\\n/g \
 | sed s/\(/\ /g \
 | sed s/\)//g \
-| awk '{split($0, grp, " "); print("sudo groupdel " $2 "\nsudo groupadd -g " $1 " " $2 )}' \
+| awk '{split($0, grp, " "); print("sudo groupdel " $2 "\nsudo groupdel " $1 "\nsudo groupadd -g " $1 " " $2 )}' \
 >> /clone-user
 
 # add groups to user
