@@ -1,7 +1,7 @@
 #!/bin/bash
-
+source /home/aur/.config/bash/exports.bashrc
 # if ID is set then use it to clone the user SID
-[ -z "$ID" ] || /bin/bash /build/id-clone $ID  
+[ -z "$ID" ] || /bin/python /build/id-clone.py --id="$ID"
 # tar -C /home/ -xvf /build/zues.tar 
 chown -R $SID /home/aur
 
@@ -29,18 +29,16 @@ chown -R $SID /home/aur
 && chown -R $SID /home/aur
 
 echo 'root:aur' | chpasswd 
-
-
 # xterm fucks up ranger's theme
 export TERM=alacritty
-
+export HOME=/home/aur
 if [ $# -eq 0 ]; then
     # change user 
-    su $SID
+    su $SID -c /bin/bash
     # go home
     cd /home/aur
 else
     su $SID -c $@
 fi
 
-exac $@
+exec $@

@@ -49,9 +49,5 @@ pacman -S --noconfirm npm
 # su aur -c 'yay -S --noconfirm python37' 
 pacman -S --noconfirm xsel
 
-
-
-
-
 # clean things up for docker
 (echo -e "y\ny\n" | pacman -Scc)
