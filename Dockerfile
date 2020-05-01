@@ -42,7 +42,8 @@ RUN rm -rf /home/aur \
 &&  mv /build/sudoers /etc/sudoers \
 &&  mv /build/entrypoint.sh /entrypoint.sh \
 &&  mkdir -p /root/.config/ \
-&&  cp /home/aur/.config/archey3.cfg /root/.config/archey3.cfg 
+&&  cp /home/aur/.config/archey3.cfg /root/.config/archey3.cfg \
+&&  sudo -u aur yay -S --noconfirm nerd-fonts-hack
 
 WORKDIR /home/aur
 
