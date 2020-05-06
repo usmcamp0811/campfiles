@@ -43,7 +43,8 @@ RUN rm -rf /home/aur \
 &&  mv /build/entrypoint.sh /entrypoint.sh \
 &&  mkdir -p /root/.config/ \
 &&  cp /home/aur/.config/archey3.cfg /root/.config/archey3.cfg \
-&&  sudo -u aur yay -S --noconfirm nerd-fonts-hack
+&&  sudo -u aur yay -S --noconfirm nerd-fonts-hack \
+&&  echo "0.2.2"
 
 WORKDIR /home/aur
 
