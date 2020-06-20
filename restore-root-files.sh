@@ -44,3 +44,10 @@ cp ./root-files/auto.master /etc/autofs/auto.master
 cp ./root-files/auto.nfs /etc/autofs/auto.nfs
 
 cp ./root-files/profile /etc/profile 
+
+# make root have same config
+ln -s /home/mcamp/.config/bash/ ~/.config/
+ln -s /home/mcamp/.bashrc ~/
+ln -s /home/mcamp/.config/nvim/ ~/.config/
+ln -s /home/mcamp/.config/coc/ ~/.config/
+ln -s /home/mcamp/.config/archey3.cfg ~/.config/

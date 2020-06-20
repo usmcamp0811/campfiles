@@ -31,7 +31,9 @@ RUN pacman -Syu --noconfirm \
 
 COPY . /build 
 
-RUN rm -rf /home/aur \
+RUN pacman -Syu --noconfirm \
+&&  pacman -S --noconfirm neovim xorg-xrandr \
+&&  rm -rf /home/aur \
 &&  git clone --separate-git-dir=/home/aur/.dotfiles https://github.com/usmcamp0811/dotfiles.git /home/aur \
 &&  chown -R aur:aur /home/aur \
 &&  cd /home/aur \
@@ -43,8 +45,8 @@ RUN rm -rf /home/aur \
 &&  mv /build/entrypoint.sh /entrypoint.sh \
 &&  mkdir -p /root/.config/ \
 &&  cp /home/aur/.config/archey3.cfg /root/.config/archey3.cfg \
-&&  sudo -u aur yay -S --noconfirm nerd-fonts-hack \
-&&  echo "0.2.2"
+&&  (echo -e "y\ny\n" | pacman -Scc) \
+&&  echo "v1.0.0"
 
 WORKDIR /home/aur
 
