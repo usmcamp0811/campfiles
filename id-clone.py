@@ -16,7 +16,7 @@ if __name__ == "__main__":
     SID = ID.split(" ")[0].split("(")[-1].replace(")","")
     GID = ID.split(" ")[1].split("gid=")[1].split("(")[0]
     GNAME = ID.split(" ")[1].split("(")[-1].replace(")","")
-
+    print(f"SID: {SID}\tUID: {UID}")
     # get current group ids used on the system
     cat_stdout = subprocess.Popen("cat /etc/passwd",stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True).stdout
     sys_gids = []
@@ -66,4 +66,5 @@ if __name__ == "__main__":
         
         subprocess.run(["usermod", "-aG", gname, SID])
 
-        
+    # change user id 
+    subprocess.run(["usermod", "-u", UID, SID]) 
