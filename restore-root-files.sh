@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # This script will copy all root level config files to where they belong
-cp ./root-files/lightdm.conf /etc/lightdm/lightdm.conf
-cp ./root-files/lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf 
+# cp ./root-files/lightdm.conf /etc/lightdm/lightdm.conf
+# cp ./root-files/lightdm-webkit2-greeter.conf /etc/lightdm/lightdm-webkit2-greeter.conf 
 
 # ILoveCandy!
-cp ./root-files/pacman.conf /etc/pacman.conf 
+# cp ./root-files/pacman.conf /etc/pacman.conf 
 
 /bin/bash ./root-files/set_locale.sh 
 
