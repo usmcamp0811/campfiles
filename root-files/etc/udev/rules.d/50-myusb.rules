@@ -1,0 +1,1 @@
+SUBSYSTEMS=="usb", ATTRS{serial}=="0374519060012581", KERNEL=="sd*", SYMLINK+="usbkey%n"
