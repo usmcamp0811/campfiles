@@ -1,0 +1,59 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND='noninteractive' 
+ENV XDG_CONFIG_HOME="$HOME/.config"
+
+WORKDIR /build 
+
+ENV DISPLAY=:0
+ENV SID=camp
+ENV UID=1000
+ENV GID=1000
+
+COPY pluginstall.vim /build/pluginstall.vim
+
+RUN apt-get update \
+&&  apt-get install -y software-properties-common \
+&&  add-apt-repository -y ppa:neovim-ppa/stable \
+&&  add-apt-repository -y ppa:deadsnakes/ppa \
+&&  add-apt-repository -y ppa:lazygit-team/release \
+&&  apt-get update -y \
+&&  apt-get install -y git neovim cargo tmux w3m wget rsync zathura python3.8 mpv npm yarn sudo \
+&&  apt-get install -y mupdf xsel unzip nodejs fonts-ibm-plex lazygit compton ranger htop bat apt-utils \
+&&  apt-get install -y docker fzf docker-compose rsync xdotool pandoc w3m odt2txt gcc openssh-client \
+&&  apt-get install -y cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev python3 python3-pip \
+&&  echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list \
+&&  wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add - \
+&&  apt-get update \
+&&  apt-get install broot \
+&&  wget https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.2-linux-x86_64.tar.gz \
+&&  tar -xvzf julia-1.5.2-linux-x86_64.tar.gz \
+&&  cp -r julia-1.5.2 /opt/ \
+&&  ln -s /opt/julia-1.5.2/bin/julia /usr/local/bin/julia \
+&&  git clone --separate-git-dir=/home/camp/.dotfiles https://github.com/usmcamp0811/dotfiles.git /home/camp \
+&&  useradd -m -r -s /bin/bash camp \
+&&  passwd -d camp \
+&&  echo 'camp ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/camp \
+&&  mkdir -p /home/camp/.gnupg \
+&&  echo 'standard-resolver' > /home/camp/.gnupg/dirmngr.conf \
+&&  git clone https://github.com/ryanoasis/nerd-fonts.git /build/nerd-fonts \
+&&  chown -R camp:camp /home/camp \ 
+&&  chown -R camp:camp /build \
+&&  python3 -m pip install bpytop powerline-shell \
+&&  rm -rf /var/lib/apt/lists/*
+
+USER camp
+
+RUN cargo install lsd \
+&&  cargo install alacritty \
+&&  cargo install ripgrep \
+&&  /usr/bin/nvim -E -s -u '/build/pluginstall.vim' +PlugInstall +qall > /dev/null 
+
+
+COPY . /build
+
+# &&  ln -s /home/camp/.cargo/bin/lsd /usr/bin/lsd \
+# &&  ln -s /home/camp/.cargo/bin/alacritty /usr/bin/alacritty \
+# &&  ln -s /home/camp/.cargo/bin/rg /usr/bin/rg \
+# &&  cd /home/camp/.config/coc/extensions \
+# &&  /usr/bin/npm i 

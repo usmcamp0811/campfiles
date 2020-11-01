@@ -37,7 +37,7 @@ USB Stick with 2 Partitions
         mkfs.ext4 /dev/sdb2
 
 Label the USB stick depends on which filesystem you want:
-check: https://wiki.ubuntuusers.de/Labels/
+check: https://wiki.ubuntuusers.de/Labels/udevadm control --reload-rules
 
 	e2label /dev/sdb1 USBKEY
 	e2label /dev/sdb2 USBDATA
@@ -106,3 +106,5 @@ You can check this with:
 	E.g.: (notice that You have to use your specified name in udev rule. **NOT /dev/sdb1 !**)
 	
 		GRUB_CMDLINE_LINUX=" ... cryptkey=/dev/usbkey1:ext4:archkey"		
+
+`sudo grub-mkconfig -o /boot/grub/grub.cfg `

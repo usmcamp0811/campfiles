@@ -1,0 +1,144 @@
+#!/bin/sh
+#/sbin/usb_keymaster
+
+# define counter-intuitive shell logic values (based on /bin/true & /bin/false)
+# NB. use FALSE only to *set* something to false, but don't test for
+# equality, because a program might return any non-zero on error
+TRUE=0
+FALSE=1
+
+# set DEBUG=$TRUE to display debug messages, DEBUG=$FALSE to be quiet
+DEBUG=$TRUE
+
+# default path to key-file on the USB/MMC disk
+KEYFILE=".keyfile"
+
+# maximum time to sleep waiting for devices to become ready before
+# asking for passphrase
+MAX_SECONDS=2
+
+# is plymouth available? default false
+PLYMOUTH=$FALSE
+if [ -x /bin/plymouth ] && plymouth -ping; then
+    PLYMOUTH=$TRUE
+fi
+
+# is usplash available? default false
+USPLASH=$FALSE
+# test for outfifo from Ubuntu Hardy cryptroot script, the second test
+# alone proves not completely reliable.
+if [ -p /dev/.initramfs/usplash_outfifo -a -x /sbin/usplash_write ]; then
+    # use innocuous command to determine if usplash is running
+    # usplash_write will return exit-code 1 if usplash isn't running
+    # need to set a flag to tell usplash_write to report no usplash
+    FAIL_NO_USPLASH=1
+    # enable verbose messages (required to display messages if kernel boot option "quiet" is enabled
+    /sbin/usplash_write "VERBOSE on"
+    if [ $? -eq $TRUE ]; then
+        # usplash is running
+        USPLASH=$TRUE
+        /sbin/usplash_write "CLEAR"
+    fi
+fi
+
+# is stty available? default false
+STTY=$FALSE
+STTYCMD=false
+# check for stty executable
+if [ -x /bin/stty ]; then
+    STTY=$TRUE
+    STTYCMD=/bin/stty
+elif [ `(busybox stty >/dev/null 2>&1; echo $?)` -eq $TRUE ]; then
+    STTY=$TRUE
+    STTYCMD="busybox stty"
+fi
+
+# print message to usplash or stderr
+# usage: msg  "message" [switch]
+# command: TEXT | STATUS | SUCCESS | FAILURE | CLEAR (see 'man usplash_write' for all commands)
+# switch : switch used for echo to stderr (ignored for usplash)
+# when using usplash the command will cause "message" to be
+# printed according to the usplash  definition.
+# using the switch -n will allow echo to write multiple messages
+# to the same line
+msg ()
+{
+    if [ $# -gt 0 ]; then
+        # handle multi-line messages
+        echo $2 | while read LINE; do
+            if [ $PLYMOUTH -eq $TRUE ]; then
+                # use plymouth
+                plymouth message -text="$LINE"
+            elif [ $USPLASH -eq $TRUE ]; then
+                # use usplash
+                /sbin/usplash_write "$1 $LINE"
+            else
+                # use stderr for all messages
+                echo $3 "$2″ >&2
+            fi
+        done
+    fi
+}
+
+dbg ()
+{
+    if [ $DEBUG -eq $TRUE ]; then
+        msg "$@"
+    fi
+}
+
+# read password from console or with usplash
+# usage: readpass "prompt"
+readpass ()
+{
+    if [ $# -gt 0 ]; then
+        if [ $PLYMOUTH -eq $TRUE ]; then
+            PASS="$(plymouth ask-for-password -prompt "$1″)"
+        elif [ $USPLASH -eq $TRUE ]; then
+            usplash_write "INPUTQUIET $1″
+            PASS="$(cat /dev/.initramfs/usplash_outfifo)"
+        else
+            [ $STTY -ne $TRUE ] && msg TEXT "WARNING stty not found, password will be visible"
+            /lib/cryptsetup/askpass "$1″
+            # echo -n "$1″ >&2
+            # $STTYCMD -echo
+            # read -r PASS /dev/null
+            # [ $STTY -eq $TRUE ] && echo >&2
+            # $STTYCMD echo
+        fi
+    fi
+    echo -n "$PASS"
+}
+
+dbg STATUS "Executing usb_keymaster …"
+
+# flag tracking key-file availability
+OPENED=$FALSE
+
+for TRY in 1 2 3 4 5
+do
+  if ! [ -e "${CRYPTTAB_KEY}" ]; then
+    dbg TEXT "Waiting for USB stick to be recognized [${TRY}]"
+    sleep 1
+  fi
+done # for TRY
+if [ -e "${CRYPTTAB_KEY}" ]; then
+  dd if="${CRYPTTAB_KEY}" bs=1 skip=0 count=512 2>/dev/nul
+  OPENED=$TRUE
+fi
+
+
+# clear existing usplash text and status messages
+[ $USPLASH -eq $TRUE ] && msg STATUS "                               " && msg CLEAR ""
+
+if [ $OPENED -ne $TRUE ]; then
+  # dbg TEXT "Failed to find suitable USB/MMC key-file …"
+  readpass "$(printf "Unlocking the disk $CRYPTTAB_SOURCE ($CRYPTTAB_NAME)\nEnter passphrase: ")"
+else
+  # dbg TEXT "Success loading key-file from $SFS ($LABEL)"
+  # msg TEXT "Unlocking the disk $CRYPTTAB_SOURCE ($CRYPTTAB_NAME)"
+  msg "Unlocking ${CRYPTTAB_SOURCE} (${CRYPTTAB_NAME}) from USB key"
+fi
+
+#
+[ $USPLASH -eq $TRUE ] && /sbin/usplash_write "VERBOSE default"

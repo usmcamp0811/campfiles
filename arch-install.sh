@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# for wifi
+iwctl station wlan0 connect <SSID>
+
 gdisk /dev/sda
 # EFI Partion 250MB
 n
@@ -45,7 +48,7 @@ cryptsetup luksOpen /dev/sda3 luks
 # This creates one partions for root, modify if /home or other partitions should be on separate partitions
 pvcreate /dev/mapper/luks
 vgcreate vg0 /dev/mapper/luks
-lvcreate --size 50 vg0 --name root
+lvcreate --size 50G vg1 --name root
 lvcreate --size 72G vg0 --name docker
 lvcreate -l +100%FREE vg0 --name home
 
@@ -67,7 +70,7 @@ mount /dev/mapper/vg0-home /mnt/home
 
 # Install the system also includes stuff needed for starting wifi when first booting into the newly installed system
 # Unless vim and bash are desired these can be removed from the command
-pacstrap /mnt base base-devel grub-efi-x86_64 nvim git efibootmgr dialog wpa_supplicant bash mkinitcpio oppen ssh lsd linux-lts go thefuck archey3 python-pip linux linux-firmware lvm2 autofs networkmanager netctl dhclient
+pacstrap /mnt base base-devel grub-efi-x86_64 neovim git efibootmgr dialog wpa_supplicant bash mkinitcpio openssh linux-lts archey3 python-pip linux linux-firmware lvm2 autofs networkmanager netctl dhclient
 
 # 'install' fstab
 genfstab -pU /mnt >> /mnt/etc/fstab
