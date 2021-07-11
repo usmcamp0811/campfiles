@@ -1,0 +1,89 @@
+# CentOS8 Setup
+
+Might be wise to go to `/etc/yum.repos.d/` and open all the `*.repo` files and change all lines that say `enable=0` to `enable=1`
+
+# nvim install
+sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sudo wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage /usr/local/bin/
+sudo ln -s /usr/local/bin/nvim.appimage /usr/bin/nvim
+sudo yum install -y python36-neovim
+
+# zsh install
+sudo yum install zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.config/zsh/zsh-autosuggestions
+git clone git clone https://github.com/djui/alias-tips.git ~/.config/zsh/alias-tips
+sudo yum install zsh-syntax-highlighting
+sudo usermod --shell /bin/zsh holger
+
+# alacritty install
+sudo yum install cmake freetype-devel fontconfig-devel libxcb-devel xcb-util-devel
+sudo yum group install "Development Tools"
+sudo su
+cd Downloads
+git clone https://github.com/jwilm/alacritty.git
+cd alacritty
+cargo build --release
+cargo install alacritty
+
+# Install nerd fonts
+git clone https://github.com/ryanoasis/nerd-fonts.git /tmp/nerd-fonts
+cd /tmp/nerd-fonts
+./install.sh
+# note: I also ran this as root
+
+
+# top like things
+sudo yum install htop
+sudo yum install bpytop
+
+# install Brave
+sudo dnf install dnf-plugins-core
+sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/x86_64/
+sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+sudo dnf install brave-browser
+
+# install VSCode
+sudo rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
+printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=gitlab.com_paulcarroty_vscodium_repo\nbaseurl=https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg" |sudo tee -a /etc/yum.repos.d/vscodium.repo
+sudo dnf install codium
+
+# install Julia 1.6.1
+sudo yum install wget -y
+wget https://julialang-s3.julialang.org/bin/linux/x64/1.6/julia-1.6.1-linux-x86_64.tar.gz -P /tmp
+cd /tmp
+tar xvf julia-1.6.1-linux-x86_64.tar.gz
+sudo mv julia-1.6.1 /usr/local/share/applications/
+sudo ln -s /usr/local/share/applications/julia-1.6.1/bin/julia /usr/bin/julia
+
+
+# install docker
+
+sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+sudo dnf install docker-ce-3:20.10.7-3.el8.x86_64 --allowerasing
+sudo usermod -aG docker holger
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo yum install rust # needed for docker-compose 
+python3 -m pip install pip --upgrade --user
+sudo python3 -m pip install docker-compose --user
+
+
+# install tldr
+sudo yum install tldr
+
+# install tmux
+sudo yum install tmux
+
+
+# install Cinnamon
+sudo dnf copr enable stenstorp/MATE
+sudo dnf config-manager --set-enabled powertools  
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+sudo dnf install NetworkManager-adsl NetworkManager-bluetooth NetworkManager-libreswan-gnome NetworkManager-openvpn-gnome NetworkManager-ovs NetworkManager-ppp NetworkManager-team NetworkManager-wifi NetworkManager-wwan abrt-desktop abrt-java-connector adwaita-gtk2-theme alsa-plugins-pulseaudio atril atril-caja atril-thumbnailer caja caja-actions caja-image-converter caja-open-terminal caja-sendto caja-wallpaper caja-xattr-tags dconf-editor engrampa eom firewall-config gnome-disk-utility gnome-epub-thumbnailer gstreamer1-plugins-ugly-free gtk2-engines gucharmap gvfs-afc gvfs-afp gvfs-archive gvfs-fuse gvfs-gphoto2 gvfs-mtp gvfs-smb initial-setup-gui libmatekbd libmatemixer libmateweather libsecret lm_sensors marco mate-applets mate-backgrounds mate-calc mate-control-center mate-desktop mate-dictionary mate-disk-usage-analyzer mate-icon-theme mate-media mate-menus mate-menus-preferences-category-menu mate-notification-daemon mate-panel mate-polkit mate-power-manager mate-screensaver mate-screenshot mate-search-tool mate-session-manager mate-settings-daemon mate-system-log mate-system-monitor mate-terminal mate-themes mate-user-admin mate-user-guide mozo network-manager-applet nm-connection-editor p7zip p7zip-plugins pluma seahorse seahorse-caja xdg-user-dirs-gtk brisk-menu
+
+sudo dnf install cinnamon-desktop
+
+# install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.config/fzf
+~/.config/fzf/install

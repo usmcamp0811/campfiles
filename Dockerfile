@@ -14,8 +14,8 @@ COPY ./pacman-install-docker.sh /pacman-install-docker.sh
 USER root
 
 RUN pacman -Syu --noconfirm \
-&&  pacman -S --noconfirm git curl wget sudo base-devel \
-&&  useradd -m -r -s /bin/bash aur  \
+&&  pacman -S --noconfirm git zsh curl wget sudo base-devel \
+&&  useradd -m -r -s /bin/zsh aur  \
 &&  passwd -d aur \
 &&  echo 'aur ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/aur \
 &&  mkdir -p /home/aur/.gnupg \
@@ -46,7 +46,7 @@ RUN pacman -Syu --noconfirm \
 &&  mkdir -p /root/.config/ \
 &&  cp /home/aur/.config/archey3.cfg /root/.config/archey3.cfg \
 &&  (echo -e "y\ny\n" | pacman -Scc) \
-&&  echo "v1.0.0"
+&&  echo "v1.2.0"
 
 WORKDIR /home/aur
 
