@@ -2,6 +2,7 @@
 
 Might be wise to go to `/etc/yum.repos.d/` and open all the `*.repo` files and change all lines that say `enable=0` to `enable=1`
 
+
 # nvim install
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 sudo wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage /usr/local/bin/
@@ -57,7 +58,6 @@ sudo ln -s /usr/local/share/applications/julia-1.6.1/bin/julia /usr/bin/julia
 
 
 # install docker
-
 sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 sudo dnf install docker-ce-3:20.10.7-3.el8.x86_64 --allowerasing
 sudo usermod -aG docker holger
@@ -75,15 +75,30 @@ sudo yum install tldr
 sudo yum install tmux
 
 
-# install Cinnamon
+# install MATE
 sudo dnf copr enable stenstorp/MATE
 sudo dnf config-manager --set-enabled powertools  
 sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-
 sudo dnf install NetworkManager-adsl NetworkManager-bluetooth NetworkManager-libreswan-gnome NetworkManager-openvpn-gnome NetworkManager-ovs NetworkManager-ppp NetworkManager-team NetworkManager-wifi NetworkManager-wwan abrt-desktop abrt-java-connector adwaita-gtk2-theme alsa-plugins-pulseaudio atril atril-caja atril-thumbnailer caja caja-actions caja-image-converter caja-open-terminal caja-sendto caja-wallpaper caja-xattr-tags dconf-editor engrampa eom firewall-config gnome-disk-utility gnome-epub-thumbnailer gstreamer1-plugins-ugly-free gtk2-engines gucharmap gvfs-afc gvfs-afp gvfs-archive gvfs-fuse gvfs-gphoto2 gvfs-mtp gvfs-smb initial-setup-gui libmatekbd libmatemixer libmateweather libsecret lm_sensors marco mate-applets mate-backgrounds mate-calc mate-control-center mate-desktop mate-dictionary mate-disk-usage-analyzer mate-icon-theme mate-media mate-menus mate-menus-preferences-category-menu mate-notification-daemon mate-panel mate-polkit mate-power-manager mate-screensaver mate-screenshot mate-search-tool mate-session-manager mate-settings-daemon mate-system-log mate-system-monitor mate-terminal mate-themes mate-user-admin mate-user-guide mozo network-manager-applet nm-connection-editor p7zip p7zip-plugins pluma seahorse seahorse-caja xdg-user-dirs-gtk brisk-menu
 
-sudo dnf install cinnamon-desktop
 
 # install fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.config/fzf
 ~/.config/fzf/install
+
+# install zathura
+sudo yum -y install glib-devel
+sudo yum -y install glib2-devel
+sudo yum -y install gtk3-devel
+git clone clone https://git.pwmt.org/pwmt/zathura.git /tmp/zathura
+
+# install devour
+git clone https://github.com/salman-abedin/devour.git /tmp/devour && cd /tmp/devour && sudo make install
+
+# install lsd
+cargo install lsd
+sudo ln -s ~/.local/share/cargo/bin/lsd /usr/bin/lsd
+
+# install bat
+cargo install bat
+sudo ln -s ~/.local/share/cargo/bin/bat /usr/bin/bat
