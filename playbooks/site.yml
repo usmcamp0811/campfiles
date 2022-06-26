@@ -1,0 +1,24 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: update repository index (Arch)
+    tags: always
+    pacman:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Archlinux"
+
+  - name: update repository index (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  roles:
+    - base

@@ -1,0 +1,2 @@
+ssh_users: "mcamp abe"
+ssh_template_file: sshd_config_arch.j2
