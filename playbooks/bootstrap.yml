@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (Arch)
+    tags: always
+    pacman:
+      upgrade: yes
+      update_cache: yes
+    when: ansible_distribution == "Archlinux"
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create abe user
+    tags: always
+    user:
+      name: abe
+      groups: root
+
+  - name: add ssh key for abe
+    tags: always
+    authorized_key:
+      user: abe
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCwxu+t3MbJf13jgDPRhna2AYuwcQelobF7CHggocDM9N02/VkOAymBYckZIpuOLH1xGawlCp0YLOhRGzlbhuk9QMV8xXZ5VzF1lzUJl7xWHzlyzz4opnTaNcc1p7zW1r3LGD74PuSgQL43uCDY+BEyQSMf9UjMAOQpPkjQme5G9EaH0nN2wZoF0qxeyJyI4YxOePrwhqQHnzIAwLvLdYR1k0Sls20kwUUmrhykZhFxJ/g7ZQQSyQmUQEt7yn5CCVkjbntptmJ/3yV2s8mb1ZJfrDbmbw+doEPBHLXVfaaI7tD7YwI8jXOo+abqXwMk4lwZTN1FOqHGJ1t2c1tGHdKNbHgWhKCrl22x0EJAOW0daaW6QPW1Sjpx/XquS0i4JxaNWh7Mj6nCP+2ogCg9b/U1tH0gYCdHEd50Lp5DdwbYv+gIfWp6n8o5b2HfJisLVeyk52klQqmIm1p7xNn5vUrIBecX0oyI52nbh4fJ1kSn87QAfTBXy79NhZlm9pW9900= mcamp@Glenn"
+
+  - name: add sudoers file for abe
+    tags: always
+    copy:
+      src: sudoer_abe
+      dest: /etc/sudoers.d/abe
+      owner: root
+      group: root
+      mode: 0440
