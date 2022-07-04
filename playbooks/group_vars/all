@@ -17,7 +17,7 @@ dotfiles:
     url: https://github.com/usmcamp0811/dotfiles.git
     destination: .dotfiles
 
-base:
+base_pkgs:
     - base 
     - linux 
     - linux-lts 

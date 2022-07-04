@@ -1,4 +1,4 @@
 - name: install base line packages needed for Arch
   tags: base
-  pacman: name={{ base }} state=latest
+  pacman: name={{ base_pkgs }} state=installed
 

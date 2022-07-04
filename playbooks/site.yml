@@ -18,6 +18,20 @@
     changed_when: false
     when: ansible_distribution == "Ubuntu"
 
+  - name: upgrade packages (Arch)
+    tags: always
+    pacman:
+      upgrade: yes
+    changed_when: false
+    when: ansible_distribution == "Archlinux"
+
+  - name: upgrade packages (Ubuntu)
+    tags: always
+    apt:
+      upgrade: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
 - hosts: all
   become: true
   roles:

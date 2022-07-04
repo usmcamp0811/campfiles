@@ -15,5 +15,5 @@
       - alacritty
       - lightdm
       - lightdm-gtk-greeter
-    state: latest
+    state: installed
     
