@@ -1,0 +1,82 @@
+user:
+    name: mcamp
+    fullname: Matt Camp
+    uid: 1000
+    group: mcamp
+    shell: /bin/zsh
+    email: matt@matt-camp.com
+    other_emails:
+      - usmcamp0811@gmail.com
+
+timezone: America/Chicago
+locale: en_US.UTF-8
+
+ssh_users: "mcamp abe"
+
+dotfiles:
+    url: https://github.com/usmcamp0811/dotfiles.git
+    destination: .dotfiles
+
+base:
+    - base 
+    - linux 
+    - linux-lts 
+    - linux-firmware 
+    - btrfs-progs
+    - grub 
+    - efibootmgr 
+    - networkmanager 
+    - network-manager-applet 
+    - wpa_supplicant 
+    - dialog 
+    - os-prober 
+    - dosfstools 
+    - base-devel 
+    - linux-headers 
+    - reflector 
+    - bluez 
+    - bluez-utils 
+    - cups 
+    - xdg-utils 
+    - xdg-user-dirs 
+    - openssh
+
+core_utils:
+    - sudo
+    - git 
+    - neovim 
+    - ranger
+    - binutils
+    - bash
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+    - bash-completion
+    - base-devel
+    - less
+    - bc
+    - lsd
+    - colordiff
+    - fzf
+    - ripgrep
+    - jq
+    - rsync
+    - parallel
+    - pwgen
+    - tmux
+    - tmuxp
+    - pkgfile
+    - mlocate
+    - make
+    - ttf-dejavu
+    - ttf-hack
+    - bat
+    - python-neovim
+    - pbzip2
+    - ctags
+    - shellcheck
+    - docker
+    - docker-compose
+    - tldr
+    - rsync
+

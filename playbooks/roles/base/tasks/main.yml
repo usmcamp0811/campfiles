@@ -1,3 +1,5 @@
+---
+
 - name: add ssh key for abe
   authorized_key:
     user: abe
@@ -12,3 +14,8 @@
     group: root
     mode: 0644
   notify: restart_sshd
+
+- include: pacman.yml
+- include: base.yml
+- include: core-utils.yml
+- include: qtile.yml
