@@ -4,16 +4,17 @@
     name:
       - qtile
       - xorg
-      - xf86-video-intel 
-      - xorg-server 
-      - xorg-apps 
-      - xorg-xinit 
-      - xterm 
-      - xorg-fonts-100dpi 
-      - xorg-fonts-75dpi 
+      - xf86-video-intel
+      - xorg-server
+      - xorg-apps
+      - xorg-xinit
+      - xterm
+      - xorg-fonts-100dpi
+      - xorg-fonts-75dpi
       - autorandr
-      - alacritty
+      - kitty
       - lightdm
       - lightdm-gtk-greeter
+      - rofi
     state: installed
     

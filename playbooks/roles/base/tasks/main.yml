@@ -15,7 +15,7 @@
     mode: 0644
   notify: restart_sshd
 
-- include: pacman.yml
 - include: base.yml
+- include: pacman.yml
 - include: core-utils.yml
 - include: qtile.yml

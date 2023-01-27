@@ -1,0 +1,6 @@
+- name: install webkit greeter
+  tags: xorg,wm
+  package:
+    name:
+      - qtile
+      - xorg
